@@ -1,0 +1,46 @@
+{
+  "1791588910173": {
+    "jobId": "1791588910173",
+    "status": "completed",
+    "progress": 100,
+    "createdAt": "2026-10-09T23:35:10.173Z",
+    "updatedAt": "2026-10-09T23:35:18.198Z",
+    "input": {
+      "title": "Prueba de Video",
+      "description": "Video de prueba del sistema",
+      "style": "profesional"
+    },
+    "file": {
+      "name": "video_final.mp4",
+      "size": 14620257,
+      "mimetype": "video/mp4"
+    },
+    "output": {
+      "url": "https://video-generator-output.vercel.app/1791588910173.mp4",
+      "message": "Video listo!"
+    },
+    "error": null
+  },
+  "1791589005078": {
+    "jobId": "1791589005078",
+    "status": "completed",
+    "progress": 100,
+    "createdAt": "2026-10-09T23:36:45.078Z",
+    "updatedAt": "2026-10-09T23:36:53.123Z",
+    "input": {
+      "title": "buen cerdito",
+      "description": "anuncio para facebook ads con el metodo aida del kg de carne de cabeza de puerco",
+      "style": "profesional"
+    },
+    "file": {
+      "name": "final (3).mp4",
+      "size": 41853466,
+      "mimetype": "video/mp4"
+    },
+    "output": {
+      "url": "https://video-generator-output.vercel.app/1791589005078.mp4",
+      "message": "Video listo!"
+    },
+    "error": null
+  }
+}

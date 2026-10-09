@@ -386,7 +386,7 @@ app.post('/api/process/:jobId', async (req, res) => {
       { progress: 50, message: 'Comprimiendo video...' },
       { progress: 75, message: 'Aplicando efectos de estilo...' },
       { progress: 90, message: 'Finalizando...' },
-      { progress: 100, message: 'Video listo para descargar!', url: `https://video-generator-output.vercel.app/${jobId}.mp4` }
+      { progress: 100, message: 'Video listo para descargar!', url: `/api/download/${jobId}` }
     ];
 
     let step = 0;
@@ -397,8 +397,8 @@ app.post('/api/process/:jobId', async (req, res) => {
         // Video completado
         const finalJob = setJobStatus(jobId, 'completed', {
           progress: 100,
-          message: progressSteps[progressSteps.length - 1].message,
-          url: progressSteps[progressSteps.length - 1].url
+          message: 'Video listo para descargar!',
+          url: `/api/download/${jobId}`
         });
 
         return;
@@ -526,6 +526,47 @@ app.get('/api/status/:jobId', (req, res) => {
     output: job.output,
     error: job.error
   });
+});
+
+/**
+ * GET /api/download/:jobId
+ * Download processed video
+ */
+app.get('/api/download/:jobId', (req, res) => {
+  const { jobId } = req.params;
+  const job = getJob(jobId);
+
+  if (!job) {
+    return res.status(404).json({
+      error: 'Job not found',
+      jobId: jobId
+    });
+  }
+
+  if (job.status !== 'completed') {
+    return res.status(400).json({
+      error: 'Video not ready',
+      message: `Job status is ${job.status}. Must be completed.`,
+      jobId: jobId
+    });
+  }
+
+  // Servir el archivo de video original como resultado simulado
+  // En producción, esto sería el archivo procesado almacenado en el servidor
+  const videoPath = path.join(__dirname, '../video_final.mp4');
+
+  // Verificar que el archivo existe
+  if (!require('fs').existsSync(videoPath)) {
+    return res.status(500).json({
+      error: 'Video file not found',
+      jobId: jobId,
+      message: 'The processed video file is not available for download'
+    });
+  }
+
+  res.setHeader('Content-Type', 'video/mp4');
+  res.setHeader('Content-Disposition', `attachment; filename="video_${jobId}.mp4"`);
+  res.sendFile(videoPath);
 });
 
 /**
