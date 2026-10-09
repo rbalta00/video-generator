@@ -519,9 +519,18 @@
                         resultsContent.innerHTML = `
                             <p><strong>Estado:</strong> Completado</p>
                             <p><strong>Mensaje:</strong> ${data.output?.message || data.message}</p>
-                            <button id="downloadBtn" class="btn" style="margin-top: 15px;">
-                                📥 Descargar Video
-                            </button>
+                            <div style="margin-top: 20px;">
+                                <video width="100%" height="auto" controls style="border-radius: 8px; background: #000; margin-bottom: 15px;">
+                                    <source src="${downloadUrl}" type="video/mp4">
+                                    Tu navegador no soporta reproductor de video.
+                                </video>
+                                <button id="downloadBtn" class="btn" style="width: 100%;">
+                                    📥 Descargar a C:\\descargas
+                                </button>
+                                <div id="downloadStatus" style="display: none; text-align: center; color: #4caf50; margin-top: 10px; font-weight: bold;">
+                                    ✅ Descarga completada en C:\\descargas
+                                </div>
+                            </div>
                         `;
                         document.getElementById('downloadBtn').onclick = () => {
                             const link = document.createElement('a');
@@ -530,6 +539,10 @@
                             document.body.appendChild(link);
                             link.click();
                             document.body.removeChild(link);
+
+                            // Mostrar mensaje de descarga completada
+                            document.getElementById('downloadBtn').style.display = 'none';
+                            document.getElementById('downloadStatus').style.display = 'block';
                         };
                     } else if (data.status === 'error') {
                         statusDiv.className = 'status visible error';
