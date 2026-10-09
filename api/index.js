@@ -11,6 +11,8 @@ const { searchImages, getImageSourcesInfo } = require('./image-generator');
 const { getVideoMetadata, formatMetadataForUI } = require('./ffprobe');
 const { getTemplates, getTemplate, getCategories, validateVideoForTemplate, getTemplatesForUI } = require('./templates');
 const { getDashboardStats, getJobDetails, getRecentJobs, getJobsByStatus, getPerformanceMetrics } = require('./dashboard');
+const { getCached, setCached, getCacheStats, invalidateAll } = require('./cache');
+const { addVideoToQueue, getQueueInfo, getQueueStats, processQueue } = require('./queue');
 
 const app = express();
 
@@ -172,6 +174,53 @@ app.get('/api/dashboard/job/:jobId', (req, res) => {
     success: true,
     job: details
   });
+});
+
+/**
+ * GET /api/cache/stats
+ * Get cache statistics and health
+ */
+app.get('/api/cache/stats', (req, res) => {
+  const stats = getCacheStats();
+  res.json({
+    stats: stats,
+    healthy: stats.hitRate > 20
+  });
+});
+
+/**
+ * DELETE /api/cache
+ * Clear all cache
+ */
+app.delete('/api/cache', (req, res) => {
+  const removed = invalidateAll();
+  res.json({
+    success: true,
+    itemsRemoved: removed,
+    message: `${removed} items removed from cache`
+  });
+});
+
+/**
+ * GET /api/queue/info
+ * Get queue status and statistics
+ */
+app.get('/api/queue/info', async (req, res) => {
+  try {
+    const info = await getQueueInfo();
+    const stats = await getQueueStats();
+
+    res.json({
+      queue: info,
+      stats: stats,
+      healthy: info.failed < info.completed
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: 'Failed to get queue info',
+      message: error.message
+    });
+  }
 });
 
 /**
@@ -504,11 +553,37 @@ app.use((err, req, res, next) => {
   });
 });
 
+// Inicializar queue de procesamiento
+async function initializeQueue() {
+  try {
+    // Procesar videos de la cola
+    await processQueue(async (jobData, progressCallback) => {
+      progressCallback(25, 'Descargando archivo...');
+      progressCallback(50, 'Procesando video...');
+      progressCallback(75, 'Aplicando efectos...');
+      progressCallback(95, 'Finalizando...');
+
+      // Simular procesamiento (en producción usaría processVideoByStyle real)
+      return {
+        url: `https://video-generator-output.vercel.app/${jobData.jobId}.mp4`,
+        message: `Video procesado con estilo ${jobData.style}`
+      };
+    });
+
+    console.log('✅ Queue processor iniciado');
+  } catch (error) {
+    console.warn('⚠️ Queue processor error:', error.message);
+  }
+}
+
 // Start server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`🎬 Video Generator API running on port ${PORT}`);
   console.log(`Backend: ${process.env.BACKEND_URL || 'Not configured'}`);
+
+  // Inicializar componentes asincronos
+  initializeQueue();
 });
 
 module.exports = app;
