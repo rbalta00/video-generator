@@ -1,13 +1,13 @@
 {
-  "1791588910173": {
-    "jobId": "1791588910173",
+  "1791589341479": {
+    "jobId": "1791589341479",
     "status": "completed",
     "progress": 100,
-    "createdAt": "2026-10-09T23:35:10.173Z",
-    "updatedAt": "2026-10-09T23:35:18.198Z",
+    "createdAt": "2026-10-09T23:42:21.479Z",
+    "updatedAt": "2026-10-09T23:42:29.529Z",
     "input": {
-      "title": "Prueba de Video",
-      "description": "Video de prueba del sistema",
+      "title": "Clean Test",
+      "description": "Download test",
       "style": "profesional"
     },
     "file": {
@@ -16,17 +16,17 @@
       "mimetype": "video/mp4"
     },
     "output": {
-      "url": "https://video-generator-output.vercel.app/1791588910173.mp4",
+      "url": "https://video-generator-output.vercel.app/1791589341479.mp4",
       "message": "Video listo!"
     },
     "error": null
   },
-  "1791589005078": {
-    "jobId": "1791589005078",
+  "1791589411164": {
+    "jobId": "1791589411164",
     "status": "completed",
     "progress": 100,
-    "createdAt": "2026-10-09T23:36:45.078Z",
-    "updatedAt": "2026-10-09T23:36:53.123Z",
+    "createdAt": "2026-10-09T23:43:31.164Z",
+    "updatedAt": "2026-10-09T23:43:39.194Z",
     "input": {
       "title": "buen cerdito",
       "description": "anuncio para facebook ads con el metodo aida del kg de carne de cabeza de puerco",
@@ -38,51 +38,29 @@
       "mimetype": "video/mp4"
     },
     "output": {
-      "url": "https://video-generator-output.vercel.app/1791589005078.mp4",
+      "url": "https://video-generator-output.vercel.app/1791589411164.mp4",
       "message": "Video listo!"
     },
     "error": null
   },
-  "1791589097261": {
-    "jobId": "1791589097261",
+  "1791589443003": {
+    "jobId": "1791589443003",
     "status": "completed",
     "progress": 100,
-    "createdAt": "2026-10-09T23:38:17.261Z",
-    "updatedAt": "2026-10-09T23:38:25.288Z",
+    "createdAt": "2026-10-09T23:44:03.003Z",
+    "updatedAt": "2026-10-09T23:44:11.033Z",
     "input": {
-      "title": "Test Download",
-      "description": "Testing download functionality",
+      "title": "buen cerdito",
+      "description": "anuncio para facebook ads con el metodo aida del kg de carne de cabeza de puerco",
       "style": "profesional"
     },
     "file": {
-      "name": "video_final.mp4",
+      "name": "video_1791589341479.mp4",
       "size": 14620257,
       "mimetype": "video/mp4"
     },
     "output": {
-      "url": "https://video-generator-output.vercel.app/1791589097261.mp4",
-      "message": "Video listo!"
-    },
-    "error": null
-  },
-  "1791589164747": {
-    "jobId": "1791589164747",
-    "status": "completed",
-    "progress": 100,
-    "createdAt": "2026-10-09T23:39:24.747Z",
-    "updatedAt": "2026-10-09T23:39:32.780Z",
-    "input": {
-      "title": "Test Download v2",
-      "description": "Testing endpoint",
-      "style": "profesional"
-    },
-    "file": {
-      "name": "video_final.mp4",
-      "size": 14620257,
-      "mimetype": "video/mp4"
-    },
-    "output": {
-      "url": "https://video-generator-output.vercel.app/1791589164747.mp4",
+      "url": "https://video-generator-output.vercel.app/1791589443003.mp4",
       "message": "Video listo!"
     },
     "error": null

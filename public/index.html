@@ -517,8 +517,8 @@
                         statusDiv.textContent = '✅ Video generado exitosamente';
                         resultsContent.innerHTML = `
                             <p><strong>Estado:</strong> Completado</p>
-                            <p><strong>Mensaje:</strong> ${data.message}</p>
-                            <a href="${data.url}" target="_blank" class="btn" style="margin-top: 15px;">
+                            <p><strong>Mensaje:</strong> ${data.output?.message || data.message}</p>
+                            <a href="${data.output?.url}" download class="btn" style="margin-top: 15px;">
                                 📥 Descargar Video
                             </a>
                         `;
