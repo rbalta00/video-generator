@@ -7,6 +7,7 @@ require('dotenv').config();
 const { validateVideoUpload, getValidationInfo } = require('./validators');
 const { createJob, getJob, setJobStatus, listJobs, getStats, simulateProgress } = require('./database');
 const { processVideoByStyle, generateOutputFilename } = require('./video-editor');
+const { searchImages, getImageSourcesInfo } = require('./image-generator');
 
 const app = express();
 
@@ -91,6 +92,46 @@ app.get('/api/jobs', (req, res) => {
  */
 app.get('/api/stats', (req, res) => {
   res.json(getStats());
+});
+
+/**
+ * GET /api/image-sources
+ * Get information about available image sources
+ */
+app.get('/api/image-sources', (req, res) => {
+  res.json(getImageSourcesInfo());
+});
+
+/**
+ * GET /api/search-images
+ * Search for images by keyword
+ * Query params: query (required), source (unsplash|pixabay|all), count (1-30)
+ */
+app.get('/api/search-images', async (req, res) => {
+  try {
+    const { query, source = 'all', count = 10 } = req.query;
+
+    if (!query) {
+      return res.status(400).json({
+        error: 'Search query is required',
+        example: '/api/search-images?query=nature&source=all&count=5'
+      });
+    }
+
+    const results = await searchImages(
+      query,
+      source,
+      Math.min(parseInt(count) || 10, 30)
+    );
+
+    res.json(results);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({
+      error: 'Failed to search images',
+      message: error.message
+    });
+  }
 });
 
 /**
