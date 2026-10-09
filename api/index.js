@@ -576,17 +576,15 @@ async function initializeQueue() {
   }
 }
 
-// Initialize queue on module load (for Vercel serverless)
+// Initialize queue on server start
 initializeQueue().catch(console.warn);
 
-// Export app for Vercel or local server
-module.exports = app;
+// Start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`🎬 Video Generator API running on port ${PORT}`);
+  console.log(`Backend: ${process.env.BACKEND_URL || 'Not configured'}`);
+});
 
-// Only start server if running locally (not on Vercel)
-if (require.main === module) {
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-    console.log(`🎬 Video Generator API running on port ${PORT}`);
-    console.log(`Backend: ${process.env.BACKEND_URL || 'Not configured'}`);
-  });
-}
+// Export app for testing or modules that need it
+module.exports = app;
