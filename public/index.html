@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎬 Video Generator - El Buen Cerdito</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.6s ease;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            animation: slideInUp 0.5s ease;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="file"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="file"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            cursor: pointer;
+        }
+
+        .upload-area {
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            background: #f8f9ff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            background: #f0f2ff;
+            border-color: #764ba2;
+        }
+
+        .upload-area.dragover {
+            background: #e8ecff;
+            border-color: #764ba2;
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .upload-hint {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+            margin-top: 10px;
+        }
+
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .status.visible {
+            display: block;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-left: 4px solid #17a2b8;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .info-box {
+            background: #f8f9ff;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-box h3 {
+            font-size: 0.9rem;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .info-box p {
+            font-size: 1.2rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(102, 126, 234, 0.3);
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 Video Generator</h1>
+            <p>Generador inteligente de videos - El Buen Cerdito</p>
+        </header>
+
+        <div class="card">
+            <h2>Crear Nuevo Video</h2>
+
+            <form id="videoForm">
+                <!-- Título -->
+                <div class="form-group">
+                    <label for="title">Título del Video</label>
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        placeholder="Ej: Mi video increíble"
+                        required
+                    >
+                </div>
+
+                <!-- Descripción -->
+                <div class="form-group">
+                    <label for="description">Descripción</label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        placeholder="Describe qué quieres que el video haga..."
+                    ></textarea>
+                </div>
+
+                <!-- Estilo -->
+                <div class="form-group">
+                    <label for="style">Estilo de Video</label>
+                    <select id="style" name="style">
+                        <option value="profesional">Profesional</option>
+                        <option value="casual">Casual</option>
+                        <option value="dinamico">Dinámico</option>
+                        <option value="editorial">Editorial</option>
+                    </select>
+                </div>
+
+                <!-- Upload de video -->
+                <div class="form-group">
+                    <label>Subir Video (opcional)</label>
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">📹</div>
+                        <div class="upload-text">Arrastra tu video aquí</div>
+                        <div class="upload-hint">o haz clic para seleccionar</div>
+                        <input
+                            type="file"
+                            id="videoFile"
+                            name="video"
+                            accept="video/*"
+                            style="display: none;"
+                        >
+                    </div>
+                </div>
+
+                <!-- Status -->
+                <div id="status" class="status"></div>
+
+                <!-- Buttons -->
+                <button type="submit" class="btn" id="submitBtn">
+                    🚀 Generar Video
+                </button>
+                <button type="reset" class="btn btn-secondary">Limpiar</button>
+            </form>
+
+            <!-- Info -->
+            <div class="info-grid">
+                <div class="info-box">
+                    <h3>⏱️ Tiempo Estimado</h3>
+                    <p>2-5 minutos</p>
+                </div>
+                <div class="info-box">
+                    <h3>📦 Tamaño Máximo</h3>
+                    <p>500 MB</p>
+                </div>
+                <div class="info-box">
+                    <h3>✨ Formatos</h3>
+                    <p>MP4, MOV, AVI</p>
+                </div>
+                <div class="info-box">
+                    <h3>🎨 Variantes</h3>
+                    <p>3 estilos</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div id="results" class="card" style="display: none;">
+            <h2>Resultados</h2>
+            <div id="resultsContent"></div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('videoForm');
+        const uploadArea = document.getElementById('uploadArea');
+        const videoFile = document.getElementById('videoFile');
+        const statusDiv = document.getElementById('status');
+        const submitBtn = document.getElementById('submitBtn');
+        const resultsDiv = document.getElementById('results');
+        const resultsContent = document.getElementById('resultsContent');
+
+        // Drag and drop
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                videoFile.files = files;
+            }
+        });
+
+        uploadArea.addEventListener('click', () => videoFile.click());
+
+        // Form submission
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner"></span> Procesando...';
+            statusDiv.className = 'status visible info';
+            statusDiv.textContent = 'Enviando video al servidor...';
+            resultsDiv.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    statusDiv.className = 'status visible success';
+                    statusDiv.innerHTML = `
+                        ✅ Video enviado correctamente<br>
+                        <small>ID: ${data.jobId}</small>
+                    `;
+
+                    resultsDiv.style.display = 'block';
+                    resultsContent.innerHTML = `
+                        <p><strong>Estado:</strong> ${data.status}</p>
+                        <p><strong>Mensaje:</strong> ${data.message}</p>
+                        <p><strong>Título:</strong> ${data.title}</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                    `;
+
+                    // Poll status
+                    pollStatus(data.jobId);
+                } else {
+                    throw new Error(data.error || 'Error al generar video');
+                }
+            } catch (error) {
+                statusDiv.className = 'status visible error';
+                statusDiv.textContent = `❌ Error: ${error.message}`;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '🚀 Generar Video';
+            }
+        });
+
+        // Poll status
+        async function pollStatus(jobId) {
+            let attempt = 0;
+            const maxAttempts = 60; // 5 minutos con interval de 5s
+
+            const poll = async () => {
+                if (attempt >= maxAttempts) {
+                    statusDiv.className = 'status visible error';
+                    statusDiv.textContent = 'Timeout: El video tardó demasiado';
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`/api/status/${jobId}`);
+                    const data = await response.json();
+
+                    const progressFill = document.querySelector('.progress-fill');
+                    if (progressFill) {
+                        progressFill.style.width = data.progress + '%';
+                    }
+
+                    if (data.status === 'completed') {
+                        statusDiv.className = 'status visible success';
+                        statusDiv.textContent = '✅ Video generado exitosamente';
+                        resultsContent.innerHTML = `
+                            <p><strong>Estado:</strong> Completado</p>
+                            <p><strong>Mensaje:</strong> ${data.message}</p>
+                            <a href="${data.url}" target="_blank" class="btn" style="margin-top: 15px;">
+                                📥 Descargar Video
+                            </a>
+                        `;
+                    } else if (data.status === 'error') {
+                        statusDiv.className = 'status visible error';
+                        statusDiv.textContent = `❌ Error: ${data.message}`;
+                    } else {
+                        statusDiv.className = 'status visible info';
+                        statusDiv.innerHTML = `
+                            ⏳ ${data.message}<br>
+                            <small>Progreso: ${data.progress}% - ${data.estimatedTime}</small>
+                        `;
+                        setTimeout(poll, 5000);
+                    }
+                } catch (error) {
+                    console.error('Error polling status:', error);
+                    setTimeout(poll, 5000);
+                }
+
+                attempt++;
+            };
+
+            poll();
+        }
+
+        // API health check
+        fetch('/api/health')
+            .then(r => r.json())
+            .then(d => console.log('✅ API Status:', d))
+            .catch(e => console.error('❌ API Error:', e));
+    </script>
+</body>
+</html>
