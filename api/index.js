@@ -5,6 +5,7 @@ const path = require('path');
 require('dotenv').config();
 
 const { validateVideoUpload, getValidationInfo } = require('./validators');
+const { createJob, getJob, setJobStatus, listJobs, getStats, simulateProgress } = require('./database');
 
 const app = express();
 
@@ -65,8 +66,35 @@ app.get('/api/validation-info', (req, res) => {
 });
 
 /**
+ * GET /api/jobs
+ * List all jobs with pagination
+ */
+app.get('/api/jobs', (req, res) => {
+  const { limit = 50, offset = 0, status = null } = req.query;
+
+  const jobs = listJobs({
+    limit: Math.min(parseInt(limit) || 50, 100),
+    offset: parseInt(offset) || 0,
+    status: status || null
+  });
+
+  res.json({
+    total: jobs.length,
+    jobs: jobs
+  });
+});
+
+/**
+ * GET /api/stats
+ * Get database statistics
+ */
+app.get('/api/stats', (req, res) => {
+  res.json(getStats());
+});
+
+/**
  * POST /api/generate
- * Create a new video
+ * Create a new video and save to database
  */
 app.post('/api/generate', upload.single('video'), async (req, res) => {
   try {
@@ -88,34 +116,23 @@ app.post('/api/generate', upload.single('video'), async (req, res) => {
     // Log del archivo aceptado
     console.log(`✅ Video validado: ${file.originalname} (${(file.size / 1024 / 1024).toFixed(2)}MB)`);
 
-    const backendUrl = process.env.BACKEND_URL;
+    // ✅ CREAR JOB EN BASE DE DATOS
+    const job = createJob({
+      title: title,
+      description: description || '',
+      style: style || 'profesional',
+      fileName: file.originalname,
+      fileSize: file.size,
+      fileMimetype: file.mimetype
+    });
 
-    if (!backendUrl) {
-      return res.json({
-        status: 'pending',
-        message: 'Backend not configured - video accepted but not processed',
-        jobId: Date.now().toString(),
-        file: {
-          name: file.originalname,
-          size: `${(file.size / 1024 / 1024).toFixed(2)}MB`,
-          mimetype: file.mimetype
-        },
-        input: {
-          title: title,
-          description: description,
-          style: style
-        },
-        hint: 'Configure BACKEND_URL environment variable to connect to processing backend'
-      });
-    }
-
-    // Llamar al backend (cuando esté listo)
-    // const backendResponse = await axios.post(`${backendUrl}/generate`, formData);
+    // Simular progreso (para testing)
+    simulateProgress(job.jobId);
 
     res.json({
-      status: 'processing',
-      jobId: Date.now().toString(),
-      message: 'Video generation started',
+      status: 'pending',
+      jobId: job.jobId,
+      message: 'Video creado y en cola de procesamiento',
       file: {
         name: file.originalname,
         size: `${(file.size / 1024 / 1024).toFixed(2)}MB`,
@@ -123,9 +140,11 @@ app.post('/api/generate', upload.single('video'), async (req, res) => {
       },
       input: {
         title: title,
-        description: description || 'No description',
+        description: description || 'Sin descripción',
         style: style || 'profesional'
-      }
+      },
+      createdAt: job.createdAt,
+      statusUrl: `/api/status/${job.jobId}`
     });
 
   } catch (error) {
@@ -139,18 +158,34 @@ app.post('/api/generate', upload.single('video'), async (req, res) => {
 
 /**
  * GET /api/status/:jobId
- * Check status of a video generation job
+ * Check status of a video generation job from database
  */
 app.get('/api/status/:jobId', (req, res) => {
   const { jobId } = req.params;
 
-  // Placeholder - en producción, buscarías en base de datos
+  // ✅ Traer job de la BD
+  const job = getJob(jobId);
+
+  if (!job) {
+    return res.status(404).json({
+      error: 'Job not found',
+      jobId: jobId,
+      message: 'The job does not exist or has expired'
+    });
+  }
+
+  // Retornar estado actual del job
   res.json({
-    jobId: jobId,
-    status: 'processing',
-    progress: 45,
-    message: 'Generating video variant 2/3',
-    estimatedTime: '2 minutes'
+    jobId: job.jobId,
+    status: job.status,
+    progress: job.progress,
+    message: job.output?.message || 'In progress',
+    estimatedTime: job.status === 'completed' ? '0 minutes' : '2-3 minutes',
+    createdAt: job.createdAt,
+    updatedAt: job.updatedAt,
+    input: job.input,
+    output: job.output,
+    error: job.error
   });
 });
 
