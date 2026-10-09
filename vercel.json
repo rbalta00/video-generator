@@ -1,18 +1,16 @@
 {
-  "name": "video-generator",
   "version": 2,
   "buildCommand": "npm install",
   "framework": "express",
   "functions": {
     "api/index.js": {
-      "memory": 3008,
-      "maxDuration": 60
+      "memory": 1024,
+      "maxDuration": 30
     }
   },
   "env": {
     "BACKEND_URL": "@backend_url",
     "NODE_ENV": "production"
   },
-  "regions": ["sfo1"],
   "public": true
 }
