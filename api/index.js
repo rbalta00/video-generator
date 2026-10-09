@@ -606,7 +606,7 @@ async function initializeQueue() {
 
       // Simular procesamiento (en producción usaría processVideoByStyle real)
       return {
-        url: `https://video-generator-output.vercel.app/${jobData.jobId}.mp4`,
+        url: `/api/download/${jobData.jobId}`,
         message: `Video procesado con estilo ${jobData.style}`
       };
     });

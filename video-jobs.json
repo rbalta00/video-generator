@@ -42,5 +42,49 @@
       "message": "Video listo!"
     },
     "error": null
+  },
+  "1791589097261": {
+    "jobId": "1791589097261",
+    "status": "completed",
+    "progress": 100,
+    "createdAt": "2026-10-09T23:38:17.261Z",
+    "updatedAt": "2026-10-09T23:38:25.288Z",
+    "input": {
+      "title": "Test Download",
+      "description": "Testing download functionality",
+      "style": "profesional"
+    },
+    "file": {
+      "name": "video_final.mp4",
+      "size": 14620257,
+      "mimetype": "video/mp4"
+    },
+    "output": {
+      "url": "https://video-generator-output.vercel.app/1791589097261.mp4",
+      "message": "Video listo!"
+    },
+    "error": null
+  },
+  "1791589164747": {
+    "jobId": "1791589164747",
+    "status": "completed",
+    "progress": 100,
+    "createdAt": "2026-10-09T23:39:24.747Z",
+    "updatedAt": "2026-10-09T23:39:32.780Z",
+    "input": {
+      "title": "Test Download v2",
+      "description": "Testing endpoint",
+      "style": "profesional"
+    },
+    "file": {
+      "name": "video_final.mp4",
+      "size": 14620257,
+      "mimetype": "video/mp4"
+    },
+    "output": {
+      "url": "https://video-generator-output.vercel.app/1791589164747.mp4",
+      "message": "Video listo!"
+    },
+    "error": null
   }
 }
