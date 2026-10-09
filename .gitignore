@@ -1,12 +1,17 @@
-# Videos
+# Videos (CRITICAL - EXCLUDE)
 *.mp4
 *.mov
 *.avi
 *.mkv
+*.flv
+*.wmv
 
-# FFmpeg binaries
+# FFmpeg binaries (CRITICAL - EXCLUDE)
 ffmpeg/
 ffmpeg-*/
+ffmpeg-*
+ffmpeg.exe
+ffprobe.exe
 
 # Python cache
 __pycache__/
@@ -39,3 +44,5 @@ clips_aida/
 material_primo/
 videos_originales/
 proyectos/
+
+.vercel
