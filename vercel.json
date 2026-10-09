@@ -9,7 +9,6 @@
     }
   },
   "env": {
-    "BACKEND_URL": "@backend_url",
     "NODE_ENV": "production"
   },
   "public": true
