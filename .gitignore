@@ -1,0 +1,41 @@
+# Videos
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# FFmpeg binaries
+ffmpeg/
+ffmpeg-*/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Folders to exclude
+clips_aida/
+material_primo/
+videos_originales/
+proyectos/

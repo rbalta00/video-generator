@@ -1,0 +1,370 @@
+╔════════════════════════════════════════════════════════════════╗
+║         🎬 EDITOR DE VIDEOS AIDA - EL BUEN CERDITO 🎬       ║
+║      Junta videos + Textos + Música para Facebook Ads         ║
+╚════════════════════════════════════════════════════════════════╝
+
+
+📋 ÍNDICE:
+1. Qué hace este editor
+2. Requisitos
+3. Cómo preparar tus videos
+4. Cómo usar el script
+5. Personalizar textos
+6. Solucionar problemas
+
+
+═══════════════════════════════════════════════════════════════════════════════
+1. QUÉ HACE ESTE EDITOR
+═══════════════════════════════════════════════════════════════════════════════
+
+El script AUTOMATICAMENTE:
+
+✅ Lee múltiples videos de una carpeta
+✅ Los junta en orden
+✅ Agrega textos AIDA (Atención, Interés, Deseo, Acción)
+✅ Agrega música de fondo
+✅ Optimiza para Facebook Ads
+✅ Exporta video listo para publicar
+
+RESULTADO: Un video profesional de 15-60 segundos perfecto para Facebook
+
+
+═══════════════════════════════════════════════════════════════════════════════
+2. REQUISITOS
+═══════════════════════════════════════════════════════════════════════════════
+
+INSTALACIONES NECESARIAS:
+
+1. Python (ya lo tienes)
+
+2. Librerías de Python (instala así):
+
+   Abre PowerShell y escribe:
+
+   pip install moviepy
+
+   Espera a que termine (puede tardar 2-3 minutos)
+
+
+═══════════════════════════════════════════════════════════════════════════════
+3. CÓMO PREPARAR TUS VIDEOS
+═══════════════════════════════════════════════════════════════════════════════
+
+PASO 1: Crea una carpeta para tus videos
+
+Ruta: C:\EDITOR_VIDEOS_BUEN_CERDITO\videos_originales
+
+(La carpeta se crea automáticamente)
+
+PASO 2: Agrega tus videos
+
+Formatos soportados:
+  • MP4 (recomendado)
+  • AVI
+  • MOV
+
+Nombre de archivos:
+  ✅ BIEN:
+     - 1_atraccion.mp4
+     - 2_producto.mp4
+     - 3_llamada.mp4
+
+  ❌ MAL (evita):
+     - video (1).mp4
+     - Mi video[FINAL].mp4
+
+PASO 3: Tamaño de videos
+
+  Recomendado para Facebook Ads:
+  • Resolución: 1080x1920 (vertical) o 1920x1080 (horizontal)
+  • Duración de cada clip: 2-10 segundos
+  • Total: 15-60 segundos
+
+
+═══════════════════════════════════════════════════════════════════════════════
+4. CÓMO USAR EL SCRIPT
+═══════════════════════════════════════════════════════════════════════════════
+
+PASO 1: Prepara tu música
+
+Ruta: C:\EDITOR_VIDEOS_BUEN_CERDITO\musica_fondo.mp3
+
+O cualquier archivo de audio en formatos:
+  • MP3
+  • WAV
+  • M4A
+  • AAC
+
+(Si no tienes música, el video se crea SIN ella)
+
+
+PASO 2: Abre PowerShell en la carpeta
+
+Ruta: C:\EDITOR_VIDEOS_BUEN_CERDITO
+
+Click derecho → "Abrir PowerShell aquí"
+
+
+PASO 3: Ejecuta el script
+
+Escribe:
+python editor_videos_aida.py
+
+Presiona ENTER
+
+Verás:
+✅ Videos encontrados
+✅ Música encontrada
+✅ Videos cargados
+✅ Juntando videos...
+✅ Agregando textos...
+✅ Agregando música...
+✅ Exportando...
+
+Cuando termine:
+✅ VIDEO LISTO!
+
+
+PASO 4: Abre el video
+
+El archivo se llama: video_final.mp4
+
+Está en: C:\EDITOR_VIDEOS_BUEN_CERDITO\video_final.mp4
+
+¡LISTO PARA FACEBOOK ADS!
+
+
+═══════════════════════════════════════════════════════════════════════════════
+5. PERSONALIZAR TEXTOS AIDA
+═══════════════════════════════════════════════════════════════════════════════
+
+Abre el archivo: editor_videos_aida.py
+
+Busca esta sección (línea ~60):
+
+TEXTOS_AIDA = {
+    "atencion": "🐷 ¡MIRA ESTO!",
+    "interes": "Cemitas hechas como en casa",
+    "deseo": "Frescas, deliciosas, irresistibles",
+    "accion": "Pide por WhatsApp: +52 222 278 1310"
+}
+
+CAMBIA los textos:
+
+TEXTOS_AIDA = {
+    "atencion": "Tu texto aquí",
+    "interes": "Tu texto aquí",
+    "deseo": "Tu texto aquí",
+    "accion": "Tu texto aquí"
+}
+
+GUARDA el archivo (Ctrl+S)
+
+EJECUTA de nuevo:
+python editor_videos_aida.py
+
+
+EJEMPLOS DE TEXTOS AIDA:
+
+🏆 ATENCIÓN (Primeros 2-3 segundos):
+  • "¡MIRA ESTO!"
+  • "ESPERA..."
+  • "NO LO PERDAS"
+  • "¡HOLA!"
+  • "🐷 EL SECRETO"
+
+📢 INTERÉS (Siguientes 2-3 segundos):
+  • "Cemitas hechas como en casa"
+  • "30 años haciendo las mejores"
+  • "Receta única y tradicional"
+  • "La comida que esperabas"
+
+💕 DESEO (Siguientes 2-3 segundos):
+  • "Frescas y deliciosas"
+  • "Irresistibles, jugosas, perfectas"
+  • "Calidad garantizada"
+  • "Hecho con amor"
+
+🎯 ACCIÓN (Últimos 2-3 segundos):
+  • "Pide ahora por WhatsApp"
+  • "📲 +52 222 278 1310"
+  • "Ordena hoy mismo"
+  • "¡No esperes más!"
+
+
+═══════════════════════════════════════════════════════════════════════════════
+6. AJUSTAR PARÁMETROS
+═══════════════════════════════════════════════════════════════════════════════
+
+Puedes cambiar:
+
+TAMAÑO DEL TEXTO:
+  FONT_SIZE = 70  (cambiar número)
+  • Más grande: 80, 90, 100
+  • Más pequeño: 50, 40, 30
+
+COLOR DEL TEXTO:
+  FONT_COLOR = 'white'  (cambiar color)
+  Opciones:
+  • 'white' (blanco)
+  • 'black' (negro)
+  • 'yellow' (amarillo)
+  • 'red' (rojo)
+
+DURACIÓN DE CADA TEXTO:
+  TEXT_DURATION = 2  (segundos)
+  • Cambiar a: 3, 4, 5
+
+VOLUMEN DE MÚSICA:
+  musica = musica.volumex(0.5)
+  • 0.3 = 30% del volumen
+  • 0.7 = 70% del volumen
+  • 1.0 = 100% del volumen
+
+
+═══════════════════════════════════════════════════════════════════════════════
+7. SOLUCIONAR PROBLEMAS
+═══════════════════════════════════════════════════════════════════════════════
+
+PROBLEMA: "No module named 'moviepy'"
+
+SOLUCIÓN:
+pip install moviepy
+
+Espera 2-3 minutos
+
+
+PROBLEMA: "No hay videos encontrados"
+
+SOLUCIÓN:
+1. Crea carpeta: C:\EDITOR_VIDEOS_BUEN_CERDITO\videos_originales
+2. Agrega videos en formatos MP4, AVI o MOV
+3. Nómbralos: 1.mp4, 2.mp4, 3.mp4
+
+
+PROBLEMA: "Error al cargar video"
+
+CAUSAS posibles:
+• Video corrupto
+• Formato no soportado
+• Ruta con caracteres especiales (ñ, tilde, etc)
+
+SOLUCIÓN:
+• Abre el video en VLC y comprueba que funciona
+• Convierte a MP4 si no lo es
+• Renombra sin caracteres especiales
+
+
+PROBLEMA: "Error de módulo ffmpeg"
+
+SOLUCIÓN:
+pip install ffmpeg-python
+
+
+PROBLEMA: El video tarda mucho en exportar
+
+NORMAL: Puede tardar 5-15 minutos dependiendo de:
+• Tamaño de los videos
+• Resolución
+• Tu computadora
+
+Espera sin cerrar PowerShell
+
+
+═══════════════════════════════════════════════════════════════════════════════
+EJEMPLO PASO A PASO
+═══════════════════════════════════════════════════════════════════════════════
+
+TIENES: 3 videos cortos de cemitas
+
+📁 C:\EDITOR_VIDEOS_BUEN_CERDITO\
+   ├─ videos_originales\
+   │  ├─ 1_producto.mp4 (3 segundos, mostrando la cemita)
+   │  ├─ 2_montaje.mp4 (3 segundos, cómo se hace)
+   │  └─ 3_comer.mp4 (5 segundos, alguien comiendo)
+   ├─ musica_fondo.mp3 (canción alegre)
+   ├─ editor_videos_aida.py
+   └─ GUIA_EDITOR_VIDEOS.txt
+
+
+PASO 1: Abre PowerShell en C:\EDITOR_VIDEOS_BUEN_CERDITO
+
+PASO 2: Ejecuta:
+python editor_videos_aida.py
+
+PASO 3: Ves en pantalla:
+✅ 3 videos encontrados
+✅ Música encontrada
+✅ Juntando videos (11 segundos totales)
+✅ Agregando textos AIDA
+✅ Agregando música
+✅ Exportando...
+⏳ (espera 5 minutos)
+
+✅ VIDEO LISTO!
+📁 video_final.mp4 (11 segundos, optimizado para Facebook)
+
+PASO 4: Abre el video:
+C:\EDITOR_VIDEOS_BUEN_CERDITO\video_final.mp4
+
+PASO 5: Publica en Facebook Ads:
+• Copias el archivo
+• Vas a Facebook Ads Manager
+• Subes el video
+• ¡LISTO! 🚀
+
+
+═══════════════════════════════════════════════════════════════════════════════
+TIPS PROFESIONALES
+═══════════════════════════════════════════════════════════════════════════════
+
+1. MÉTODO AIDA PARA FACEBOOK ADS:
+
+   ATENCIÓN (0-2s):
+   → Imagen o video llamativo
+   → Texto: "¡ESPERA!" o emoji atractivo
+
+   INTERÉS (2-5s):
+   → Muestra el producto
+   → Texto: "Esto es lo que buscabas"
+
+   DESEO (5-8s):
+   → Beneficios / Por qué es bueno
+   → Texto: "Mira lo que conseguirás"
+
+   ACCIÓN (8-12s):
+   → Llamada clara
+   → Texto: "Pide ahora" + link
+
+
+2. DURACIÓN:
+   • Facebook preferencia: 15-30 segundos
+   • Instagram Reels: 15-60 segundos
+   • TikTok: 15-60 segundos
+
+
+3. TEXTOS:
+   • Cortos y directos
+   • Fuente grande (tamaño 70+)
+   • Sin voz (solo música)
+   • Colores contrastar con fondo
+
+
+4. MÚSICA:
+   • Alegre y energética
+   • Royalty-free (sin copyright)
+   • Volumen bajo (0.3-0.5)
+
+
+═══════════════════════════════════════════════════════════════════════════════
+¿NECESITAS AYUDA?
+═══════════════════════════════════════════════════════════════════════════════
+
+Si tienes problemas:
+1. Lee esta guía de nuevo
+2. Revisa la sección "Solucionar problemas"
+3. Comprueba que tus videos están en la carpeta correcta
+4. Intenta de nuevo
+
+¡Éxito! 🎬
+═══════════════════════════════════════════════════════════════════════════════

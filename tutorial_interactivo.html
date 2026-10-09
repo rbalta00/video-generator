@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎬 Tutorial Editor de Videos - El Buen Cerdito</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 48px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 18px;
+            color: #666;
+        }
+
+        .paso {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-left: 5px solid #667eea;
+        }
+
+        .paso h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .numero {
+            background: #667eea;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .paso-contenido {
+            margin-top: 15px;
+        }
+
+        .instruccion {
+            margin-bottom: 15px;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .instruccion strong {
+            color: #333;
+        }
+
+        .codigo {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            border-left: 3px solid #667eea;
+            overflow-x: auto;
+        }
+
+        .ruta {
+            background: #fffacd;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 3px solid #ffd700;
+            font-family: monospace;
+        }
+
+        .titulo-ruta {
+            font-weight: bold;
+            color: #666;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .checklist {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 3px solid #4caf50;
+        }
+
+        .checklist h3 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+        }
+
+        .checklist label {
+            display: block;
+            margin-bottom: 10px;
+            cursor: pointer;
+            color: #555;
+        }
+
+        .checklist input[type="checkbox"] {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .checklist input[type="checkbox"]:checked + span {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        .boton {
+            background: #667eea;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+            display: inline-block;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .boton:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+
+        .advertencia {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 3px solid #ffc107;
+            color: #856404;
+        }
+
+        .exito {
+            background: #d4edda;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 3px solid #28a745;
+            color: #155724;
+        }
+
+        .tabla {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .tabla td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .tabla td:first-child {
+            font-weight: bold;
+            background: #f5f5f5;
+            width: 30%;
+        }
+
+        .footer {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .footer h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .footer p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .progreso {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progreso-barra {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .paso {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>🎬 Editor de Videos AIDA</h1>
+            <p>Tutorial paso a paso para crear videos profesionales</p>
+        </div>
+
+        <!-- PROGRESO -->
+        <div class="progreso">
+            <div class="progreso-barra" id="progreso"></div>
+        </div>
+
+        <!-- PASO 1 -->
+        <div class="paso">
+            <h2>
+                <div class="numero">1</div>
+                Instalar Librería
+            </h2>
+            <div class="paso-contenido">
+                <p class="instruccion">Abre <strong>PowerShell</strong> y ejecuta este comando:</p>
+
+                <div class="codigo">
+pip install moviepy
+                </div>
+
+                <p class="instruccion">Espera 2-3 minutos a que termine la instalación.</p>
+
+                <div class="exito">
+                    ✅ Cuando veas "Successfully installed moviepy" = ¡LISTO!<br>
+                    📌 Solo necesitas hacer esto UNA VEZ
+                </div>
+            </div>
+        </div>
+
+        <!-- PASO 2 -->
+        <div class="paso">
+            <h2>
+                <div class="numero">2</div>
+                Crear Carpeta de Videos
+            </h2>
+            <div class="paso-contenido">
+                <p class="instruccion">Crea una carpeta llamada <strong>"videos_originales"</strong> en:</p>
+
+                <div class="ruta">
+                    <div class="titulo-ruta">Ubicación:</div>
+                    C:\EDITOR_VIDEOS_BUEN_CERDITO\videos_originales\
+                </div>
+
+                <p class="instruccion">
+                    <strong>Cómo hacerlo:</strong><br>
+                    1. Ve a C:\EDITOR_VIDEOS_BUEN_CERDITO\<br>
+                    2. Click derecho → Nuevo → Carpeta<br>
+                    3. Nómbrala: <strong>videos_originales</strong><br>
+                    4. ¡Listo!
+                </p>
+            </div>
+        </div>
+
+        <!-- PASO 3 -->
+        <div class="paso">
+            <h2>
+                <div class="numero">3</div>
+                Agregar Videos
+            </h2>
+            <div class="paso-contenido">
+                <p class="instruccion">Copia tus videos MP4 a la carpeta <strong>videos_originales</strong></p>
+
+                <div class="advertencia">
+                    ⚠️ <strong>Importante:</strong><br>
+                    • Formatos soportados: MP4, AVI, MOV<br>
+                    • Duración recomendada: 2-10 segundos cada video<br>
+                    • Total ideal: 15-60 segundos<br>
+                    • Nombres: sin caracteres especiales (ñ, tildes, etc)
+                </div>
+
+                <p class="instruccion"><strong>Ejemplos de nombres válidos:</strong></p>
+                <div class="codigo">
+1.mp4
+2.mp4
+3.mp4
+<br>
+O también:
+<br>
+producto.mp4
+montaje.mp4
+llamada.mp4
+                </div>
+            </div>
+        </div>
+
+        <!-- PASO 4 -->
+        <div class="paso">
+            <h2>
+                <div class="numero">4</div>
+                Agregar Música (Opcional)
+            </h2>
+            <div class="paso-contenido">
+                <p class="instruccion">Descarga una música MP3 y cópiala a:</p>
+
+                <div class="ruta">
+                    <div class="titulo-ruta">Ubicación:</div>
+                    C:\EDITOR_VIDEOS_BUEN_CERDITO\musica_fondo.mp3
+                </div>
+
+                <p class="instruccion"><strong>Dónde descargar música gratis:</strong></p>
+                <ul style="margin-left: 20px; color: #555;">
+                    <li>🎵 Pixabay Music (pixabay.com/music)</li>
+                    <li>🎵 YouTube Audio Library</li>
+                    <li>🎵 Bensound (bensound.com)</li>
+                </ul>
+
+                <div class="advertencia">
+                    ℹ️ <strong>Nota:</strong> Si no tienes música, el script igualmente crea el video sin ella
+                </div>
+            </div>
+        </div>
+
+        <!-- PASO 5 -->
+        <div class="paso">
+            <h2>
+                <div class="numero">5</div>
+                Ejecutar el Script
+            </h2>
+            <div class="paso-contenido">
+                <p class="instruccion"><strong>Opción A: Click derecho</strong></p>
+                <div class="codigo">
+1. Ve a: C:\EDITOR_VIDEOS_BUEN_CERDITO\
+2. Click derecho en el espacio vacío
+3. "Abrir PowerShell aquí"
+                </div>
+
+                <p class="instruccion"><strong>Opción B: Desde PowerShell</strong></p>
+                <div class="codigo">
+cd C:\EDITOR_VIDEOS_BUEN_CERDITO
+                </div>
+
+                <p class="instruccion"><strong>Luego ejecuta:</strong></p>
+                <div class="codigo">
+python editor_videos_aida.py
+                </div>
+
+                <p class="instruccion">Presiona <strong>ENTER</strong> y espera...</p>
+            </div>
+        </div>
+
+        <!-- PASO 6 -->
+        <div class="paso">
+            <h2>
+                <div class="numero">6</div>
+                Ver el Resultado
+            </h2>
+            <div class="paso-contenido">
+                <p class="instruccion">Cuando termine, abre:</p>
+
+                <div class="ruta">
+                    <div class="titulo-ruta">Archivo generado:</div>
+                    C:\EDITOR_VIDEOS_BUEN_CERDITO\video_final.mp4
+                </div>
+
+                <p class="instruccion">
+                    Haz <strong>doble click</strong> para abrir en VLC o tu reproductor predeterminado
+                </p>
+
+                <div class="exito">
+                    ✅ ¡Video listo para Facebook Ads!<br>
+                    🚀 Cópialo y publícalo en tu campaña
+                </div>
+            </div>
+        </div>
+
+        <!-- PASO 7 -->
+        <div class="paso">
+            <h2>
+                <div class="numero">7</div>
+                Personalizar Textos (Opcional)
+            </h2>
+            <div class="paso-contenido">
+                <p class="instruccion">Si quieres cambiar los textos AIDA:</p>
+
+                <p class="instruccion"><strong>1. Abre el archivo:</strong></p>
+                <div class="ruta">
+                    C:\EDITOR_VIDEOS_BUEN_CERDITO\editor_videos_aida.py
+                </div>
+
+                <p class="instruccion"><strong>2. Con Notepad o VS Code</strong></p>
+
+                <p class="instruccion"><strong>3. Busca esta sección (línea ~60):</strong></p>
+                <div class="codigo">
+TEXTOS_AIDA = {
+    "atencion": "🐷 ¡MIRA ESTO!",
+    "interes": "Cemitas hechas como en casa",
+    "deseo": "Frescas, deliciosas, irresistibles",
+    "accion": "Pide por WhatsApp: +52 222 278 1310"
+}
+                </div>
+
+                <p class="instruccion"><strong>4. Reemplaza con tus textos:</strong></p>
+                <div class="codigo">
+TEXTOS_AIDA = {
+    "atencion": "Tu primer texto",
+    "interes": "Tu segundo texto",
+    "deseo": "Tu tercer texto",
+    "accion": "Tu llamada a acción"
+}
+                </div>
+
+                <p class="instruccion"><strong>5. Guarda (Ctrl+S) y ejecuta de nuevo</strong></p>
+            </div>
+        </div>
+
+        <!-- CHECKLIST -->
+        <div class="paso">
+            <h2>
+                <div class="numero">✓</div>
+                Checklist Rápido
+            </h2>
+            <div class="paso-contenido">
+                <div class="checklist">
+                    <h3>Antes de ejecutar:</h3>
+                    <label>
+                        <input type="checkbox" onchange="actualizarProgreso()">
+                        <span>Instalaste: pip install moviepy</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" onchange="actualizarProgreso()">
+                        <span>Creaste: videos_originales\ en C:\EDITOR_VIDEOS_BUEN_CERDITO\</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" onchange="actualizarProgreso()">
+                        <span>Copiaste videos MP4 en videos_originales\</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" onchange="actualizarProgreso()">
+                        <span>(Opcional) Descargaste música en musica_fondo.mp3</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" onchange="actualizarProgreso()">
+                        <span>Abriste PowerShell en C:\EDITOR_VIDEOS_BUEN_CERDITO\</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" onchange="actualizarProgreso()">
+                        <span>Ejecutaste: python editor_videos_aida.py</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" onchange="actualizarProgreso()">
+                        <span>Esperaste a que termine (5-15 minutos)</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" onchange="actualizarProgreso()">
+                        <span>Abriste video_final.mp4</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- SOLUCIONAR PROBLEMAS -->
+        <div class="paso">
+            <h2>
+                <div class="numero">⚠️</div>
+                Solucionar Problemas
+            </h2>
+            <div class="paso-contenido">
+                <table class="tabla">
+                    <tr>
+                        <td>Error: "No module named 'moviepy'"</td>
+                        <td>Ejecuta: <strong>pip install moviepy</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Error: "No videos found"</td>
+                        <td>Verifica que exista videos_originales\ con videos dentro</td>
+                    </tr>
+                    <tr>
+                        <td>Error: "Error loading video"</td>
+                        <td>Convierte los videos a MP4, sin caracteres especiales</td>
+                    </tr>
+                    <tr>
+                        <td>Tarda mucho (15+ min)</td>
+                        <td>NORMAL - Espera sin cerrar PowerShell</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <h3>🎬 ¡LISTO PARA CREAR VIDEOS!</h3>
+            <p>Sigue estos pasos y tendrás videos profesionales para Facebook Ads en minutos.</p>
+            <p><strong>Duración total:</strong> 10 minutos de configuración + 5-15 minutos de procesamiento</p>
+
+            <div class="exito" style="text-align: left;">
+                <strong>Recuerda:</strong><br>
+                ✅ Los textos AIDA funcionan porque: Atención → Interés → Deseo → Acción<br>
+                ✅ La música de fondo debe ser alegre y energética<br>
+                ✅ Los videos deben estar en formato MP4<br>
+                ✅ Total de duración: 15-60 segundos ideal para Facebook
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function actualizarProgreso() {
+            const checkboxes = document.querySelectorAll('.checklist input[type="checkbox"]');
+            const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const total = checkboxes.length;
+            const porcentaje = (checked / total) * 100;
+            document.getElementById('progreso').style.width = porcentaje + '%';
+        }
+    </script>
+</body>
+</html>
