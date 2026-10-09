@@ -10,6 +10,7 @@ const { processVideoByStyle, generateOutputFilename } = require('./video-editor'
 const { searchImages, getImageSourcesInfo } = require('./image-generator');
 const { getVideoMetadata, formatMetadataForUI } = require('./ffprobe');
 const { getTemplates, getTemplate, getCategories, validateVideoForTemplate, getTemplatesForUI } = require('./templates');
+const { getDashboardStats, getJobDetails, getRecentJobs, getJobsByStatus, getPerformanceMetrics } = require('./dashboard');
 
 const app = express();
 
@@ -94,6 +95,83 @@ app.get('/api/jobs', (req, res) => {
  */
 app.get('/api/stats', (req, res) => {
   res.json(getStats());
+});
+
+/**
+ * GET /api/dashboard
+ * Get complete dashboard statistics
+ */
+app.get('/api/dashboard', (req, res) => {
+  res.json(getDashboardStats());
+});
+
+/**
+ * GET /api/dashboard/metrics
+ * Get performance metrics summary
+ */
+app.get('/api/dashboard/metrics', (req, res) => {
+  res.json(getPerformanceMetrics());
+});
+
+/**
+ * GET /api/dashboard/recent
+ * Get recent jobs
+ * Query param: limit (default 10, max 50)
+ */
+app.get('/api/dashboard/recent', (req, res) => {
+  const { limit = 10 } = req.query;
+  const jobs = getRecentJobs(Math.min(parseInt(limit) || 10, 50));
+  res.json({
+    count: jobs.length,
+    jobs: jobs
+  });
+});
+
+/**
+ * GET /api/dashboard/status/:status
+ * Get jobs by status
+ * Params: status (pending|processing|completed|error)
+ * Query: limit (default 20, max 100)
+ */
+app.get('/api/dashboard/status/:status', (req, res) => {
+  const { status } = req.params;
+  const { limit = 20 } = req.query;
+
+  const validStatuses = ['pending', 'processing', 'completed', 'error'];
+  if (!validStatuses.includes(status)) {
+    return res.status(400).json({
+      error: 'Invalid status',
+      validStatuses: validStatuses
+    });
+  }
+
+  const jobs = getJobsByStatus(status, Math.min(parseInt(limit) || 20, 100));
+  res.json({
+    status: status,
+    count: jobs.length,
+    jobs: jobs
+  });
+});
+
+/**
+ * GET /api/dashboard/job/:jobId
+ * Get detailed info about a specific job
+ */
+app.get('/api/dashboard/job/:jobId', (req, res) => {
+  const { jobId } = req.params;
+  const details = getJobDetails(jobId);
+
+  if (!details) {
+    return res.status(404).json({
+      error: 'Job not found',
+      jobId: jobId
+    });
+  }
+
+  res.json({
+    success: true,
+    job: details
+  });
 });
 
 /**
@@ -407,6 +485,14 @@ app.get('/api/status/:jobId', (req, res) => {
  */
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
+});
+
+/**
+ * GET /dashboard
+ * Serve dashboard page
+ */
+app.get('/dashboard', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/dashboard.html'));
 });
 
 // Error handling
