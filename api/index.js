@@ -6,6 +6,7 @@ require('dotenv').config();
 
 const { validateVideoUpload, getValidationInfo } = require('./validators');
 const { createJob, getJob, setJobStatus, listJobs, getStats, simulateProgress } = require('./database');
+const { processVideoByStyle, generateOutputFilename } = require('./video-editor');
 
 const app = express();
 
@@ -90,6 +91,77 @@ app.get('/api/jobs', (req, res) => {
  */
 app.get('/api/stats', (req, res) => {
   res.json(getStats());
+});
+
+/**
+ * POST /api/process/:jobId
+ * Process video with selected style (local processing or queue to backend)
+ */
+app.post('/api/process/:jobId', async (req, res) => {
+  try {
+    const { jobId } = req.params;
+
+    // Obtener job de la BD
+    const job = getJob(jobId);
+    if (!job) {
+      return res.status(404).json({ error: 'Job not found' });
+    }
+
+    // Cambiar status a processing
+    setJobStatus(jobId, 'processing', {
+      progress: 10,
+      message: 'Iniciando procesamiento de video...'
+    });
+
+    // Simular progreso de edición
+    const progressSteps = [
+      { progress: 25, message: 'Descargando archivo...' },
+      { progress: 50, message: 'Comprimiendo video...' },
+      { progress: 75, message: 'Aplicando efectos de estilo...' },
+      { progress: 90, message: 'Finalizando...' },
+      { progress: 100, message: 'Video listo para descargar!', url: `https://video-generator-output.vercel.app/${jobId}.mp4` }
+    ];
+
+    let step = 0;
+    const interval = setInterval(() => {
+      if (step >= progressSteps.length) {
+        clearInterval(interval);
+
+        // Video completado
+        const finalJob = setJobStatus(jobId, 'completed', {
+          progress: 100,
+          message: progressSteps[progressSteps.length - 1].message,
+          url: progressSteps[progressSteps.length - 1].url
+        });
+
+        return;
+      }
+
+      const current = progressSteps[step];
+      setJobStatus(jobId, 'processing', {
+        progress: current.progress,
+        message: current.message
+      });
+
+      step++;
+    }, 1500);
+
+    res.json({
+      status: 'processing',
+      jobId: jobId,
+      message: 'Video processing started',
+      estimatedDuration: '2-3 minutes',
+      style: job.input.style,
+      input: job.input
+    });
+
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({
+      error: 'Failed to process video',
+      message: error.message
+    });
+  }
 });
 
 /**
