@@ -9,6 +9,7 @@ const { createJob, getJob, setJobStatus, listJobs, getStats, simulateProgress } 
 const { processVideoByStyle, generateOutputFilename } = require('./video-editor');
 const { searchImages, getImageSourcesInfo } = require('./image-generator');
 const { getVideoMetadata, formatMetadataForUI } = require('./ffprobe');
+const { getTemplates, getTemplate, getCategories, validateVideoForTemplate, getTemplatesForUI } = require('./templates');
 
 const app = express();
 
@@ -93,6 +94,71 @@ app.get('/api/jobs', (req, res) => {
  */
 app.get('/api/stats', (req, res) => {
   res.json(getStats());
+});
+
+/**
+ * GET /api/templates
+ * Get all available video templates
+ * Query param: category (optional, filter by category)
+ */
+app.get('/api/templates', (req, res) => {
+  const { category } = req.query;
+  res.json({
+    templates: getTemplates(category),
+    categories: getCategories(),
+    count: Object.keys(getTemplates(category)).length
+  });
+});
+
+/**
+ * GET /api/templates-ui
+ * Get templates organized for UI display
+ */
+app.get('/api/templates-ui', (req, res) => {
+  res.json({
+    templates: getTemplatesForUI(),
+    categories: getCategories()
+  });
+});
+
+/**
+ * GET /api/templates/:templateId
+ * Get specific template by ID
+ */
+app.get('/api/templates/:templateId', (req, res) => {
+  const { templateId } = req.params;
+  const template = getTemplate(templateId);
+
+  if (!template) {
+    return res.status(404).json({
+      error: 'Template not found',
+      templateId: templateId,
+      availableTemplates: Object.keys(getTemplates())
+    });
+  }
+
+  res.json({
+    success: true,
+    template: template
+  });
+});
+
+/**
+ * POST /api/templates/validate
+ * Validate if video meets template requirements
+ * Body: { templateId, metadata }
+ */
+app.post('/api/templates/validate', (req, res) => {
+  const { templateId, metadata } = req.body;
+
+  if (!templateId || !metadata) {
+    return res.status(400).json({
+      error: 'templateId and metadata are required'
+    });
+  }
+
+  const validation = validateVideoForTemplate(metadata, templateId);
+  res.json(validation);
 });
 
 /**
