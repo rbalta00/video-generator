@@ -64,5 +64,49 @@
       "message": "Video listo!"
     },
     "error": null
+  },
+  "1791589519396": {
+    "jobId": "1791589519396",
+    "status": "completed",
+    "progress": 100,
+    "createdAt": "2026-10-09T23:45:19.396Z",
+    "updatedAt": "2026-10-09T23:45:27.417Z",
+    "input": {
+      "title": "Final Download Test",
+      "description": "Testing fixed download",
+      "style": "dinamico"
+    },
+    "file": {
+      "name": "video_final.mp4",
+      "size": 14620257,
+      "mimetype": "video/mp4"
+    },
+    "output": {
+      "url": "https://video-generator-output.vercel.app/1791589519396.mp4",
+      "message": "Video listo!"
+    },
+    "error": null
+  },
+  "1791589628254": {
+    "jobId": "1791589628254",
+    "status": "completed",
+    "progress": 100,
+    "createdAt": "2026-10-09T23:47:08.254Z",
+    "updatedAt": "2026-10-09T23:47:16.280Z",
+    "input": {
+      "title": "buen cerdito",
+      "description": "anuncio para facebook ads con el metodo aida del kg de carne de cabeza de puerco",
+      "style": "profesional"
+    },
+    "file": {
+      "name": "video_1791589341479.mp4",
+      "size": 14620257,
+      "mimetype": "video/mp4"
+    },
+    "output": {
+      "url": "https://video-generator-output.vercel.app/1791589628254.mp4",
+      "message": "Video listo!"
+    },
+    "error": null
   }
 }

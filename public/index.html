@@ -515,13 +515,22 @@
                     if (data.status === 'completed') {
                         statusDiv.className = 'status visible success';
                         statusDiv.textContent = '✅ Video generado exitosamente';
+                        const downloadUrl = data.output?.url;
                         resultsContent.innerHTML = `
                             <p><strong>Estado:</strong> Completado</p>
                             <p><strong>Mensaje:</strong> ${data.output?.message || data.message}</p>
-                            <a href="${data.output?.url}" download class="btn" style="margin-top: 15px;">
+                            <button id="downloadBtn" class="btn" style="margin-top: 15px;">
                                 📥 Descargar Video
-                            </a>
+                            </button>
                         `;
+                        document.getElementById('downloadBtn').onclick = () => {
+                            const link = document.createElement('a');
+                            link.href = downloadUrl;
+                            link.download = true;
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                        };
                     } else if (data.status === 'error') {
                         statusDiv.className = 'status visible error';
                         statusDiv.textContent = `❌ Error: ${data.message}`;
