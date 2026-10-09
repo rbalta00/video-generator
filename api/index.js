@@ -4,6 +4,8 @@ const multer = require('multer');
 const path = require('path');
 require('dotenv').config();
 
+const { validateVideoUpload, getValidationInfo } = require('./validators');
+
 const app = express();
 
 // Middleware
@@ -38,10 +40,11 @@ app.get('/api/health', (req, res) => {
 app.get('/api/info', (req, res) => {
   res.json({
     name: 'Video Generator Pro',
-    version: '1.0.0',
+    version: '1.0.1',
     description: 'AI-powered video generator for El Buen Cerdito',
     features: [
       'Video creation from templates',
+      'File validation (size, extension, MIME type)',
       'Automatic image generation',
       'FFmpeg integration',
       'Variant creation',
@@ -54,6 +57,14 @@ app.get('/api/info', (req, res) => {
 });
 
 /**
+ * GET /api/validation-info
+ * Get validation requirements and limits
+ */
+app.get('/api/validation-info', (req, res) => {
+  res.json(getValidationInfo());
+});
+
+/**
  * POST /api/generate
  * Create a new video
  */
@@ -62,36 +73,59 @@ app.post('/api/generate', upload.single('video'), async (req, res) => {
     const { title, description, style } = req.body;
     const file = req.file;
 
-    if (!file) {
-      return res.status(400).json({ error: 'No video file provided' });
+    // ✅ VALIDAR archivos y formulario
+    const validation = validateVideoUpload(file, req.body);
+
+    if (!validation.valid) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Validation failed',
+        errors: validation.errors,
+        hint: 'Please check the validation requirements at /api/validation-info'
+      });
     }
 
-    // Aquí es donde llamarías al backend Python
-    // Por ahora, retorna respuesta simulada
+    // Log del archivo aceptado
+    console.log(`✅ Video validado: ${file.originalname} (${(file.size / 1024 / 1024).toFixed(2)}MB)`);
 
     const backendUrl = process.env.BACKEND_URL;
 
     if (!backendUrl) {
       return res.json({
         status: 'pending',
-        message: 'Backend not configured yet',
-        file: file.filename,
-        title: title,
-        hint: 'Configure BACKEND_URL environment variable to connect to Python backend'
+        message: 'Backend not configured - video accepted but not processed',
+        jobId: Date.now().toString(),
+        file: {
+          name: file.originalname,
+          size: `${(file.size / 1024 / 1024).toFixed(2)}MB`,
+          mimetype: file.mimetype
+        },
+        input: {
+          title: title,
+          description: description,
+          style: style
+        },
+        hint: 'Configure BACKEND_URL environment variable to connect to processing backend'
       });
     }
 
-    // Llamar al backend Python (cuando esté listo)
+    // Llamar al backend (cuando esté listo)
     // const backendResponse = await axios.post(`${backendUrl}/generate`, formData);
 
     res.json({
       status: 'processing',
       jobId: Date.now().toString(),
       message: 'Video generation started',
-      file: file.filename,
-      title: title,
-      description: description,
-      style: style
+      file: {
+        name: file.originalname,
+        size: `${(file.size / 1024 / 1024).toFixed(2)}MB`,
+        mimetype: file.mimetype
+      },
+      input: {
+        title: title,
+        description: description || 'No description',
+        style: style || 'profesional'
+      }
     });
 
   } catch (error) {

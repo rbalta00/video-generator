@@ -333,7 +333,7 @@
 
                 <!-- Upload de video -->
                 <div class="form-group">
-                    <label>Subir Video (opcional)</label>
+                    <label>Subir Video (requerido)</label>
                     <div class="upload-area" id="uploadArea">
                         <div class="upload-icon">📹</div>
                         <div class="upload-text">Arrastra tu video aquí</div>
@@ -345,6 +345,9 @@
                             accept="video/*"
                             style="display: none;"
                         >
+                    </div>
+                    <div id="fileInfo" style="margin-top: 10px; display: none;">
+                        <small id="fileDetails" style="color: #666;"></small>
                     </div>
                 </div>
 
@@ -415,6 +418,27 @@
         });
 
         uploadArea.addEventListener('click', () => videoFile.click());
+
+        // File change handler
+        videoFile.addEventListener('change', () => {
+            const file = videoFile.files[0];
+            if (file) {
+                const sizeMB = (file.size / 1024 / 1024).toFixed(2);
+                const fileInfo = document.getElementById('fileInfo');
+                const fileDetails = document.getElementById('fileDetails');
+
+                fileDetails.textContent = `Archivo: ${file.name} (${sizeMB} MB)`;
+                fileInfo.style.display = 'block';
+            }
+        });
+
+        // Load validation info on page load
+        fetch('/api/validation-info')
+            .then(r => r.json())
+            .then(data => {
+                console.log('✅ Validation requirements loaded');
+            })
+            .catch(e => console.error('Error loading validation info:', e));
 
         // Form submission
         form.addEventListener('submit', async (e) => {
