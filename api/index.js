@@ -551,12 +551,26 @@ app.get('/api/download/:jobId', (req, res) => {
     });
   }
 
-  // Servir el archivo de video original como resultado simulado
-  // En producción, esto sería el archivo procesado almacenado en el servidor
-  const videoPath = path.join(__dirname, '../video_final.mp4');
+  // Definir ruta de descargas
+  const downloadDir = 'C:\\descargas';
+  const videoFilename = `video_${jobId}.mp4`;
+  const downloadPath = path.join(downloadDir, videoFilename);
+
+  // Copiar el video a la carpeta de descargas si no existe
+  const sourceVideoPath = path.join(__dirname, '../video_final.mp4');
+  const fs = require('fs');
+
+  if (!fs.existsSync(downloadPath) && fs.existsSync(sourceVideoPath)) {
+    try {
+      fs.copyFileSync(sourceVideoPath, downloadPath);
+      console.log(`✅ Video copied to: ${downloadPath}`);
+    } catch (error) {
+      console.warn(`⚠️ Could not copy video to downloads folder: ${error.message}`);
+    }
+  }
 
   // Verificar que el archivo existe
-  if (!require('fs').existsSync(videoPath)) {
+  if (!fs.existsSync(downloadPath)) {
     return res.status(500).json({
       error: 'Video file not found',
       jobId: jobId,
@@ -565,8 +579,8 @@ app.get('/api/download/:jobId', (req, res) => {
   }
 
   res.setHeader('Content-Type', 'video/mp4');
-  res.setHeader('Content-Disposition', `attachment; filename="video_${jobId}.mp4"`);
-  res.sendFile(videoPath);
+  res.setHeader('Content-Disposition', `attachment; filename="${videoFilename}"`);
+  res.sendFile(downloadPath);
 });
 
 /**
