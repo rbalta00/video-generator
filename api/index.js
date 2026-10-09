@@ -8,6 +8,7 @@ const { validateVideoUpload, getValidationInfo } = require('./validators');
 const { createJob, getJob, setJobStatus, listJobs, getStats, simulateProgress } = require('./database');
 const { processVideoByStyle, generateOutputFilename } = require('./video-editor');
 const { searchImages, getImageSourcesInfo } = require('./image-generator');
+const { getVideoMetadata, formatMetadataForUI } = require('./ffprobe');
 
 const app = express();
 
@@ -100,6 +101,38 @@ app.get('/api/stats', (req, res) => {
  */
 app.get('/api/image-sources', (req, res) => {
   res.json(getImageSourcesInfo());
+});
+
+/**
+ * POST /api/video-info
+ * Get metadata from uploaded video file
+ * Body: { filePath } (path to video file in /tmp)
+ */
+app.post('/api/video-info', async (req, res) => {
+  try {
+    const { filePath } = req.body;
+
+    if (!filePath) {
+      return res.status(400).json({
+        error: 'filePath is required',
+        example: '{ "filePath": "/tmp/uploads/video.mp4" }'
+      });
+    }
+
+    const metadata = await getVideoMetadata(filePath);
+    const formatted = formatMetadataForUI(metadata);
+
+    res.json({
+      success: true,
+      metadata: formatted
+    });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({
+      error: 'Failed to get video metadata',
+      message: error.message
+    });
+  }
 });
 
 /**
