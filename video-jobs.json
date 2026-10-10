@@ -306,5 +306,27 @@
       "message": "Video listo!"
     },
     "error": null
+  },
+  "1791592681944": {
+    "jobId": "1791592681944",
+    "status": "completed",
+    "progress": 100,
+    "createdAt": "2026-10-10T00:38:01.944Z",
+    "updatedAt": "2026-10-10T00:38:09.995Z",
+    "input": {
+      "title": "video increible",
+      "description": "crea un video de venta de cabeza de puerco",
+      "style": "profesional"
+    },
+    "file": {
+      "name": "final (5).mp4",
+      "size": 43453703,
+      "mimetype": "video/mp4"
+    },
+    "output": {
+      "url": "https://video-generator-output.vercel.app/1791592681944.mp4",
+      "message": "Video listo!"
+    },
+    "error": null
   }
 }

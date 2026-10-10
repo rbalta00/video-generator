@@ -455,6 +455,20 @@ app.post('/api/generate', upload.single('video'), async (req, res) => {
     // Log del archivo aceptado
     console.log(`✅ Video validado: ${file.originalname} (${(file.size / 1024 / 1024).toFixed(2)}MB)`);
 
+    // Crear carpeta uploads si no existe
+    const uploadsDir = path.join(__dirname, '../uploads');
+    if (!require('fs').existsSync(uploadsDir)) {
+      require('fs').mkdirSync(uploadsDir, { recursive: true });
+    }
+
+    // Generar jobId primero para usarlo en el nombre del archivo
+    const jobId = Date.now().toString();
+    const newFilePath = path.join(uploadsDir, `${jobId}.mp4`);
+
+    // Mover el archivo a la carpeta uploads con el jobId como nombre
+    require('fs').renameSync(file.path, newFilePath);
+    console.log(`📁 Video guardado: ${newFilePath}`);
+
     // ✅ CREAR JOB EN BASE DE DATOS
     const job = createJob({
       title: title,
@@ -462,7 +476,9 @@ app.post('/api/generate', upload.single('video'), async (req, res) => {
       style: style || 'profesional',
       fileName: file.originalname,
       fileSize: file.size,
-      fileMimetype: file.mimetype
+      fileMimetype: file.mimetype,
+      filePath: newFilePath,
+      jobId: jobId
     });
 
     // Simular progreso (para testing)
@@ -551,13 +567,14 @@ app.get('/api/stream/:jobId', (req, res) => {
     });
   }
 
-  const sourceVideoPath = path.join(__dirname, '../video_final.mp4');
   const fs = require('fs');
+  const sourceVideoPath = job.file?.path || path.join(__dirname, '../video_final.mp4');
 
   if (!fs.existsSync(sourceVideoPath)) {
     return res.status(500).json({
       error: 'Video file not found',
       jobId: jobId,
+      path: sourceVideoPath,
       message: 'The video file is not available'
     });
   }
@@ -596,8 +613,8 @@ app.get('/api/download/:jobId', (req, res) => {
   const downloadPath = path.join(downloadDir, videoFilename);
 
   // Copiar el video a la carpeta de descargas si no existe
-  const sourceVideoPath = path.join(__dirname, '../video_final.mp4');
   const fs = require('fs');
+  const sourceVideoPath = job.file?.path || path.join(__dirname, '../video_final.mp4');
 
   if (!fs.existsSync(downloadPath) && fs.existsSync(sourceVideoPath)) {
     try {

@@ -58,7 +58,7 @@ function saveJobs() {
  * @returns {object} Job creado
  */
 function createJob(jobData) {
-  const jobId = Date.now().toString();
+  const jobId = jobData.jobId || Date.now().toString();
 
   const job = {
     jobId: jobId,
@@ -74,7 +74,8 @@ function createJob(jobData) {
     file: {
       name: jobData.fileName || 'video.mp4',
       size: jobData.fileSize || 0,
-      mimetype: jobData.fileMimetype || 'video/mp4'
+      mimetype: jobData.fileMimetype || 'video/mp4',
+      path: jobData.filePath || null
     },
     output: {
       url: null,
@@ -250,7 +251,7 @@ function simulateProgress(jobId) {
     { progress: 25, status: 'processing', message: 'Descargando archivos...' },
     { progress: 50, status: 'processing', message: 'Procesando video...' },
     { progress: 75, status: 'processing', message: 'Generando variantes...' },
-    { progress: 100, status: 'completed', message: 'Video listo!', url: `https://video-generator-output.vercel.app/${jobId}.mp4` }
+    { progress: 100, status: 'completed', message: 'Video listo!', url: `/api/stream/${jobId}` }
   ];
 
   let stepIndex = 0;
