@@ -572,6 +572,14 @@
             .then(r => r.json())
             .then(d => console.log('✅ API Status:', d))
             .catch(e => console.error('❌ API Error:', e));
+
+        // Auto-load test video from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const testJobId = urlParams.get('jobId');
+        if (testJobId) {
+            console.log('📺 Loading test video:', testJobId);
+            pollStatus(testJobId);
+        }
     </script>
 </body>
 </html>
