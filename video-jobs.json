@@ -196,5 +196,71 @@
       "message": "Video listo!"
     },
     "error": null
+  },
+  "1791590460972": {
+    "jobId": "1791590460972",
+    "status": "completed",
+    "progress": 100,
+    "createdAt": "2026-10-10T00:01:00.972Z",
+    "updatedAt": "2026-10-10T00:01:09.010Z",
+    "input": {
+      "title": "video el cerdo",
+      "description": "crea un video con el metodo aida para vender cemitas y carne de cabreza de puerco",
+      "style": "profesional"
+    },
+    "file": {
+      "name": "final (5).mp4",
+      "size": 43453703,
+      "mimetype": "video/mp4"
+    },
+    "output": {
+      "url": "https://video-generator-output.vercel.app/1791590460972.mp4",
+      "message": "Video listo!"
+    },
+    "error": null
+  },
+  "1791590538997": {
+    "jobId": "1791590538997",
+    "status": "completed",
+    "progress": 100,
+    "createdAt": "2026-10-10T00:02:18.997Z",
+    "updatedAt": "2026-10-10T00:02:27.030Z",
+    "input": {
+      "title": "video el cerdo",
+      "description": "crea un video con el metodo aida para vender cemitas y carne de cabreza de puerco",
+      "style": "dinamico"
+    },
+    "file": {
+      "name": "final (2).mp4",
+      "size": 51632160,
+      "mimetype": "video/mp4"
+    },
+    "output": {
+      "url": "https://video-generator-output.vercel.app/1791590538997.mp4",
+      "message": "Video listo!"
+    },
+    "error": null
+  },
+  "1791590576047": {
+    "jobId": "1791590576047",
+    "status": "completed",
+    "progress": 100,
+    "createdAt": "2026-10-10T00:02:56.047Z",
+    "updatedAt": "2026-10-10T00:03:04.079Z",
+    "input": {
+      "title": "Test",
+      "description": "Test",
+      "style": "profesional"
+    },
+    "file": {
+      "name": "video_final.mp4",
+      "size": 14620257,
+      "mimetype": "video/mp4"
+    },
+    "output": {
+      "url": "https://video-generator-output.vercel.app/1791590576047.mp4",
+      "message": "Video listo!"
+    },
+    "error": null
   }
 }

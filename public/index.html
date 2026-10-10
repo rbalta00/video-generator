@@ -515,13 +515,14 @@
                     if (data.status === 'completed') {
                         statusDiv.className = 'status visible success';
                         statusDiv.textContent = '✅ Video generado exitosamente';
-                        const downloadUrl = data.output?.url;
+                        const streamUrl = `/api/stream/${jobId}`;
+                        const downloadUrl = `/api/download/${jobId}`;
                         resultsContent.innerHTML = `
                             <p><strong>Estado:</strong> Completado</p>
                             <p><strong>Mensaje:</strong> ${data.output?.message || data.message}</p>
                             <div style="margin-top: 20px;">
                                 <video width="100%" height="auto" controls style="border-radius: 8px; background: #000; margin-bottom: 15px;">
-                                    <source src="${downloadUrl}" type="video/mp4">
+                                    <source src="${streamUrl}" type="video/mp4">
                                     Tu navegador no soporta reproductor de video.
                                 </video>
                                 <button id="downloadBtn" class="btn" style="width: 100%;">

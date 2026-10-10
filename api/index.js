@@ -529,6 +529,45 @@ app.get('/api/status/:jobId', (req, res) => {
 });
 
 /**
+ * GET /api/stream/:jobId
+ * Stream video for playback (without download header)
+ */
+app.get('/api/stream/:jobId', (req, res) => {
+  const { jobId } = req.params;
+  const job = getJob(jobId);
+
+  if (!job) {
+    return res.status(404).json({
+      error: 'Job not found',
+      jobId: jobId
+    });
+  }
+
+  if (job.status !== 'completed') {
+    return res.status(400).json({
+      error: 'Video not ready',
+      message: `Job status is ${job.status}. Must be completed.`,
+      jobId: jobId
+    });
+  }
+
+  const sourceVideoPath = path.join(__dirname, '../video_final.mp4');
+  const fs = require('fs');
+
+  if (!fs.existsSync(sourceVideoPath)) {
+    return res.status(500).json({
+      error: 'Video file not found',
+      jobId: jobId,
+      message: 'The video file is not available'
+    });
+  }
+
+  res.setHeader('Content-Type', 'video/mp4');
+  res.setHeader('Accept-Ranges', 'bytes');
+  res.sendFile(sourceVideoPath);
+});
+
+/**
  * GET /api/download/:jobId
  * Download processed video
  */
