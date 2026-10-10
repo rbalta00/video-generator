@@ -485,25 +485,6 @@ app.post('/api/generate', upload.single('video'), async (req, res) => {
     // Simular progreso (para testing)
     simulateProgress(job.jobId);
 
-    // Procesar video con transiciones en segundo plano
-    const processedVideoPath = newFilePath.replace(/\.mp4$/, '_processed.mp4');
-
-    processWithClipTransitions(newFilePath, processedVideoPath)
-      .then(() => {
-        // Actualizar el path del video al archivo procesado
-        const updatedJob = getJob(job.jobId);
-        if (updatedJob) {
-          updatedJob.file.path = processedVideoPath;
-          require('fs').writeFileSync(path.join(__dirname, '../video-jobs.json'), JSON.stringify(require('./database').loadJobs(), null, 2));
-        }
-        console.log(`✅ Video procesado con transiciones: ${processedVideoPath}`);
-      })
-      .catch((err) => {
-        console.error(`⚠️ Error procesando video: ${err.message}`);
-        // Si falla el procesamiento, mantener el video original
-        console.log(`📌 Usando video original sin transiciones`);
-      });
-
     res.json({
       status: 'pending',
       jobId: job.jobId,
