@@ -14,6 +14,7 @@ const { getDashboardStats, getJobDetails, getRecentJobs, getJobsByStatus, getPer
 const { getCached, setCached, getCacheStats, invalidateAll } = require('./cache');
 const { addVideoToQueue, getQueueInfo, getQueueStats, processQueue } = require('./queue');
 const { addTransitions, processWithClipTransitions } = require('./video-processor');
+const { analyzeVideoAIDA, generateAIDAReport, formatSeconds } = require('./aida-analyzer');
 
 const app = express();
 
@@ -638,6 +639,50 @@ app.get('/api/download/:jobId', (req, res) => {
   res.setHeader('Content-Type', 'video/mp4');
   res.setHeader('Content-Disposition', `attachment; filename="${videoFilename}"`);
   res.sendFile(downloadPath);
+});
+
+/**
+ * GET /api/analyze/:jobId
+ * Analyze video using AIDA method
+ */
+app.get('/api/analyze/:jobId', (req, res) => {
+  const { jobId } = req.params;
+  const job = getJob(jobId);
+
+  if (!job) {
+    return res.status(404).json({
+      error: 'Job not found',
+      jobId: jobId
+    });
+  }
+
+  if (job.status !== 'completed') {
+    return res.status(400).json({
+      error: 'Video not ready',
+      message: `Job status is ${job.status}. Must be completed.`,
+      jobId: jobId
+    });
+  }
+
+  // Obtener duración del video (si no está disponible, usar 60 segundos por defecto)
+  const videoDuration = 60;
+
+  // Analizar video con método AIDA
+  const analysis = analyzeVideoAIDA(
+    videoDuration,
+    job.input?.title || 'Sin título',
+    job.input?.description || ''
+  );
+
+  // Agregar información del job
+  analysis.jobId = jobId;
+  analysis.input = job.input;
+
+  res.json({
+    status: 'success',
+    jobId: jobId,
+    analysis: analysis
+  });
 });
 
 /**
