@@ -328,5 +328,74 @@
       "message": "Video listo!"
     },
     "error": null
+  },
+  "1791592862146": {
+    "jobId": "1791592862146",
+    "status": "completed",
+    "progress": 100,
+    "createdAt": "2026-10-10T00:41:02.148Z",
+    "updatedAt": "2026-10-10T00:41:10.181Z",
+    "input": {
+      "title": "incr",
+      "description": "haz un anuncio vendiendo caveza de puerco",
+      "style": "profesional"
+    },
+    "file": {
+      "name": "final (5).mp4",
+      "size": 43453703,
+      "mimetype": "video/mp4",
+      "path": "C:\\EDITOR_VIDEOS_BUEN_CERDITO\\uploads\\1791592862146.mp4"
+    },
+    "output": {
+      "url": "/api/stream/1791592862146",
+      "message": "Video listo!"
+    },
+    "error": null
+  },
+  "1791592933192": {
+    "jobId": "1791592933192",
+    "status": "completed",
+    "progress": 100,
+    "createdAt": "2026-10-10T00:42:13.193Z",
+    "updatedAt": "2026-10-10T00:42:21.230Z",
+    "input": {
+      "title": "incr",
+      "description": "haz un anuncio vendiendo caveza de puerco",
+      "style": "profesional"
+    },
+    "file": {
+      "name": "final (1).mp4",
+      "size": 46352787,
+      "mimetype": "video/mp4",
+      "path": "C:\\EDITOR_VIDEOS_BUEN_CERDITO\\uploads\\1791592933192.mp4"
+    },
+    "output": {
+      "url": "/api/stream/1791592933192",
+      "message": "Video listo!"
+    },
+    "error": null
+  },
+  "1791592993234": {
+    "jobId": "1791592993234",
+    "status": "completed",
+    "progress": 100,
+    "createdAt": "2026-10-10T00:43:13.235Z",
+    "updatedAt": "2026-10-10T00:43:21.260Z",
+    "input": {
+      "title": "incr",
+      "description": "haz un anuncio vendiendo caveza de puerco",
+      "style": "profesional"
+    },
+    "file": {
+      "name": "video_1791589750236.mp4",
+      "size": 14620257,
+      "mimetype": "video/mp4",
+      "path": "C:\\EDITOR_VIDEOS_BUEN_CERDITO\\uploads\\1791592993234.mp4"
+    },
+    "output": {
+      "url": "/api/stream/1791592993234",
+      "message": "Video listo!"
+    },
+    "error": null
   }
 }

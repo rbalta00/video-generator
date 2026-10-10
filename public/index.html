@@ -517,6 +517,7 @@
                         statusDiv.textContent = '✅ Video generado exitosamente';
                         const streamUrl = `/api/stream/${jobId}`;
                         const downloadUrl = `/api/download/${jobId}`;
+                        resultsDiv.style.display = 'block';
                         resultsContent.innerHTML = `
                             <p><strong>Estado:</strong> Completado</p>
                             <p><strong>Mensaje:</strong> ${data.output?.message || data.message}</p>
@@ -533,6 +534,10 @@
                                 </div>
                             </div>
                         `;
+                        // Auto-scroll a los resultados
+                        setTimeout(() => {
+                            resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 100);
                         document.getElementById('downloadBtn').onclick = () => {
                             const link = document.createElement('a');
                             link.href = downloadUrl;
