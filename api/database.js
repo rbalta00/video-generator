@@ -242,15 +242,15 @@ function getStats() {
  * Simular progreso (para testing)
  * @param {string} jobId
  */
-function simulateProgress(jobId) {
+function simulateProgress(jobId, processor = null) {
   const job = getJob(jobId);
   if (!job) return;
 
   // Progresión: 0% → 25% → 50% → 75% → 100%
   const progressSteps = [
-    { progress: 25, status: 'processing', message: 'Descargando archivos...' },
-    { progress: 50, status: 'processing', message: 'Procesando video...' },
-    { progress: 75, status: 'processing', message: 'Generando variantes...' },
+    { progress: 25, status: 'processing', message: 'Analizando video...' },
+    { progress: 50, status: 'processing', message: 'Agregando transiciones...' },
+    { progress: 75, status: 'processing', message: 'Optimizando calidad...' },
     { progress: 100, status: 'completed', message: 'Video listo!', url: `/api/stream/${jobId}` }
   ];
 
@@ -270,7 +270,7 @@ function simulateProgress(jobId) {
     });
 
     stepIndex++;
-  }, 2000); // Cada 2 segundos un paso
+  }, 3000); // Cada 3 segundos un paso
 }
 
 module.exports = {
